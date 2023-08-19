@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Snake_Game
 {
-    class Pos
+    public class Pos
     {
         public Pos(int y, int x) { Y = y; X = x; }
         public int Y;
         public int X;
     }
 
-
-
     public class Snake
     {
+        private List<Pos> _positions = new List<Pos>();
+        public List<Pos> Positions { get { return _positions; } }
 
         public int PosY { get; private set; }
         public int PosX { get; private set; }
 
-        List<Pos> _points = new List<Pos>();
+        private int _headPosY;
+        private int _headPosX;
 
         public enum Dir
         {
@@ -37,30 +40,65 @@ namespace Snake_Game
         {
             PosY = posY;
             PosX = posX;
+            _positions.Add(new Pos(PosY, PosX));
         }
 
         public void MoveSnake()
         {
+            _headPosY = _positions[0].Y;
+            _headPosX = _positions[0].X;
+
             switch (_dir)
             {
                 case (int)Dir.Up:
-                    PosX--;
+                    _positions[0].Y--;
+                    MoveSnakeBody();
                     break;
                 case (int)Dir.Down:
-                    PosX++;
+                    _positions[0].Y++;
+                    MoveSnakeBody();
                     break;
                 case (int)Dir.Left:
-                    PosY--;
+                    _positions[0].X--;
+                    MoveSnakeBody();
                     break;
                 case (int)Dir.Right:
-                    PosY++;
+                    _positions[0].X++;
+                    MoveSnakeBody();
                     break;
+            }
+        }
+
+        private void MoveSnakeBody()
+        {
+            if (_positions.Count > 1)
+            {
+                _positions[_positions.Count - 1].Y = _headPosY;
+                _positions[_positions.Count - 1].X = _headPosX;
+                _positions.Insert(1, _positions[_positions.Count - 1]);
+                _positions.RemoveAt(_positions.Count - 1);
             }
         }
 
         public void SwitchDirection(Dir dir)
         {
+            if ((int)Dir.Left == _dir && dir == Dir.Right)
+                return;
+            else if ((int)Dir.Right == _dir && dir == Dir.Left)
+                return;
+            else if ((int)Dir.Up == _dir && dir == Dir.Down)
+                return;
+            else if ((int)Dir.Down == _dir && dir == Dir.Up)
+                return;
+
             _dir = (int)dir;
+        }
+        
+
+        public void EatFood(int posY, int posX)
+        {
+            Pos pos = new Pos(posY, posX);
+            _positions.Add(pos);
         }
     }
 }

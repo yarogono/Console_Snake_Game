@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Snake_Game
@@ -12,30 +13,27 @@ namespace Snake_Game
 
         public int Size { get; private set; }
 
-        Snake _snake;
-
-        public void Initialize(int size, Snake snake)
+        public void Initialize(int size)
         {
             Size = size;
-            _snake = snake;
         }
 
-        public void Render()
+        public void Render(List<Pos> points)
         {
-            for (int i = 0; i < Size; i++)
+            for (int y = 0; y < Size; y++)
             {
-                for (int j = 0; j < Size; j++)
+                for (int x = 0; x < Size; x++)
                 {
-                    if (_snake.PosY == j && _snake.PosX == i)
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                    foreach (Pos pos in points)
+                        if (pos.Y == y && pos.X == x)
                             Console.ForegroundColor = ConsoleColor.Green;
-                    else
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
 
                     Console.Write(CIRCLE);
                 }
                 Console.WriteLine();
             }
         }
-
     }
 }
