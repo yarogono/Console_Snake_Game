@@ -18,7 +18,7 @@ namespace Snake_Game
             Size = size;
         }
 
-        public void Render(List<Pos> points)
+        public void Render(List<Pos> snakePoints, Pos foodPos)
         {
             for (int y = 0; y < Size; y++)
             {
@@ -26,9 +26,12 @@ namespace Snake_Game
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                    foreach (Pos pos in points)
+                    foreach (Pos pos in snakePoints)
                         if (pos.Y == y && pos.X == x)
                             Console.ForegroundColor = ConsoleColor.Green;
+
+                    if (foodPos.Y == y && foodPos.X == x)
+                        Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.Write(CIRCLE);
                 }

@@ -17,8 +17,8 @@ namespace Snake_Game
 
     public class Snake
     {
-        private List<Pos> _positions = new List<Pos>();
         public List<Pos> Positions { get { return _positions; } }
+        private List<Pos> _positions = new List<Pos>();
 
         public int PosY { get; private set; }
         public int PosX { get; private set; }
@@ -95,10 +95,10 @@ namespace Snake_Game
         }
         
 
-        public void EatFood(int posY, int posX)
+        public void EatFood(Pos foodPos)
         {
-            Pos pos = new Pos(posY, posX);
-            _positions.Add(pos);
+            Pos snakeBodyPos = new Pos(foodPos.Y, foodPos.X);
+            _positions.Add(snakeBodyPos);
         }
     }
 }

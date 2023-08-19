@@ -10,6 +10,7 @@ namespace Snake_Game
     {
         private Map _map;
         private Snake _snake;
+        private Food _food;
 
         private int _mapSize = 25;
 
@@ -17,8 +18,11 @@ namespace Snake_Game
         {
             _map = new Map();
             _snake = new Snake();
+            _food = new Food();
+            
             _map.Initialize(_mapSize);
             _snake.Initialize(10, 12);
+            _food.CreateFood(5, 5);
 
             Console.CursorVisible = false;
  
@@ -35,8 +39,15 @@ namespace Snake_Game
                 ConsoleKeyPressCheck();
 
                 Console.SetCursorPosition(0, 0);
+
+                if (_snake.Positions[0].Y == _food.Position.Y && _snake.Positions[0].X ==  _food.Position.X)
+                {
+                    _snake.EatFood(_food.Position);
+                    _food.RespawnFood();
+                }
+
                 _snake.MoveSnake();
-                _map.Render(_snake.Positions);
+                _map.Render(_snake.Positions, _food.Position);
 
                 Thread.Sleep(100);
             }
