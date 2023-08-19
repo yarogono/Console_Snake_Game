@@ -26,12 +26,12 @@ namespace Snake_Game
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
 
+                    if (foodPos.Y == y && foodPos.X == x)
+                        Console.ForegroundColor = ConsoleColor.Red;
+
                     foreach (Pos pos in snakePoints)
                         if (pos.Y == y && pos.X == x)
                             Console.ForegroundColor = ConsoleColor.Green;
-
-                    if (foodPos.Y == y && foodPos.X == x)
-                        Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.Write(CIRCLE);
                 }

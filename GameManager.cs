@@ -28,6 +28,8 @@ namespace Snake_Game
  
             while (true)
             {
+                Console.SetCursorPosition(0, 0);
+
                 if (IsGameOver())
                 {
                     Console.Clear();
@@ -38,18 +40,21 @@ namespace Snake_Game
 
                 ConsoleKeyPressCheck();
 
-                Console.SetCursorPosition(0, 0);
-
-                if (_snake.Positions[0].Y == _food.Position.Y && _snake.Positions[0].X ==  _food.Position.X)
-                {
-                    _snake.EatFood(_food.Position);
-                    _food.RespawnFood();
-                }
+                SnakeEatFoodCheck();
 
                 _snake.MoveSnake();
                 _map.Render(_snake.Positions, _food.Position);
 
                 Thread.Sleep(100);
+            }
+        }
+
+        private void SnakeEatFoodCheck()
+        {
+            if (_snake.Positions[0].Y == _food.Position.Y && _snake.Positions[0].X == _food.Position.X)
+            {
+                _snake.EatFood(_food.Position);
+                _food.RespawnFood();
             }
         }
 
@@ -81,8 +86,17 @@ namespace Snake_Game
 
         private bool IsGameOver()
         {
-            if (_snake.Positions[0].Y <= -1 || _snake.Positions[0].Y >= _map.Size || _snake.Positions[0].X <= -1 || _snake.Positions[0].X >= _map.Size)
+            int headPosY = _snake.Positions[0].Y;
+            int headPosX = _snake.Positions[0].X;
+
+            if (headPosY <= -1 || headPosY >= _map.Size || headPosX <= -1 || headPosX >= _map.Size)
                 return true;
+
+            for (int i = 1; i < _snake.Positions.Count; i++)
+            {
+                if (headPosY == _snake.Positions[i].Y && headPosX ==  _snake.Positions[i].X)
+                    return true;
+            }
 
             return false;
         }
