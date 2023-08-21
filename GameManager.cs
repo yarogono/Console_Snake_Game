@@ -13,6 +13,10 @@ namespace Snake_Game
         private Food _food;
 
         private int _mapSize = 25;
+        private int _sumTick = 0;
+
+        private const int WAIT_TICK = 1000 / 10;
+        private const int MOVE_TICK = 1000;
 
         public void StartGame()
         {
@@ -25,9 +29,20 @@ namespace Snake_Game
             _food.CreateFood(5, 5);
 
             Console.CursorVisible = false;
- 
+            int lastTick = 0;
             while (true)
             {
+                #region 프레임 관리
+                // 만약에 경과한 시간이 1/30초보다 작다면
+                int currentTick = System.Environment.TickCount;
+                if (currentTick - lastTick < WAIT_TICK)
+                    continue;
+
+                int deltaTick = currentTick - lastTick;
+                lastTick = currentTick;
+                #endregion
+
+
                 Console.SetCursorPosition(0, 0);
 
                 if (IsGameOver())
@@ -42,10 +57,15 @@ namespace Snake_Game
 
                 SnakeEatFoodCheck();
 
-                _snake.MoveSnake();
-                _map.Render(_snake.Positions, _food.Position);
 
-                Thread.Sleep(100);
+                _sumTick += deltaTick;
+                if (_sumTick >= MOVE_TICK)
+                {
+                    _snake.MoveSnake();
+                    _map.Render(_snake.Positions, _food.Position);
+                }
+
+                //Thread.Sleep(100);
             }
         }
 
