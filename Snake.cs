@@ -73,9 +73,8 @@ namespace Snake_Game
         {
             if (_positions.Count > 1)
             {
-                _positions[_positions.Count - 1].Y = _headPosY;
-                _positions[_positions.Count - 1].X = _headPosX;
-                _positions.Insert(1, _positions[_positions.Count - 1]);
+                Pos snakeNewBody = new Pos(_headPosY, _headPosX);
+                _positions.Insert(1, snakeNewBody);
                 _positions.RemoveAt(_positions.Count - 1);
             }
         }
