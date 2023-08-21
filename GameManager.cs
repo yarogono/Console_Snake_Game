@@ -64,8 +64,6 @@ namespace Snake_Game
                     _snake.MoveSnake();
                     _map.Render(_snake.Positions, _food.Position);
                 }
-
-                //Thread.Sleep(100);
             }
         }
 
